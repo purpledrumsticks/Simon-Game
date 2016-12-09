@@ -65,10 +65,87 @@ const mainGame = function  mainGame () {
     }
   }
 
-  const simonFunctions = function simonFunctions () {
+  const gamePlayFunctions = function gamePlayFunctions () {
 
     $('.cell').css('pointer-events', 'none');
     $('.cell').css('cursor', 'auto');
+
+    const replayOnError = function replayOnError () {
+      let replayColor = "";
+      let i = 0;
+      let seconds = 1000 * count;
+
+      const replayer = function replayer () {
+        replayColor = simonArr[i++];
+        lightUp(replayColor);
+        playSound(replayColor);
+          if (i < simonArr.length) {
+            setTimeout( replayer, 1000 );
+          }
+        }
+        replayer();
+        setTimeout(() => { userFunctions(); }, seconds);
+    }
+
+    const checkPattern = function checkPattern () {
+      //logic that checks if the simonArr and the userArr are the same
+      let arrIndex = simonArr.length - 1;
+      let errorSound = new Audio('./sounds/errorSound.wav');
+      if (userArr[arrIndex] === simonArr[arrIndex]) {
+        console.log('they the same!');
+        setTimeout(() => { return gamePlayFunctions(); }, 2000);
+      } else {
+        console.log('they not the same!');
+        errorSound.play();
+        setTimeout(() => { return replayOnError(); }, 1500 );
+      }
+      if (strictMode) {
+        if (userArr[arrIndex] === simonArr[arrIndex]) {
+          console.log('they the same!');
+        } else {
+          console.log('they not the same!');
+          errorSound.play();
+          //newGame();
+        }
+      }
+    };
+
+    const userFunctions = function userFunctions () {
+        userArr = [];
+        $('.cell').css('pointer-events', 'auto');
+        $('.cell').css('cursor', 'pointer');
+
+          $('.cell').unbind().on('click', (ev) => {
+          let cellColor = ev.target.className.split(" ")[0];
+          let clickColor = "";
+          if (cellColor === 'greenCell') {
+            clickColor = "green";
+            userArr.push('green');
+            lightUp(clickColor);
+            playSound(clickColor);
+          } else if (cellColor === 'redCell') {
+            clickColor = "red";
+            userArr.push('red');
+            lightUp(clickColor);
+            playSound(clickColor);
+          } else if (cellColor === 'yellowCell') {
+            clickColor = "yellow";
+            userArr.push('yellow');
+            lightUp(clickColor);
+            playSound(clickColor);
+          } else if (cellColor === 'blueCell'){
+            clickColor = "blue";
+            userArr.push('blue');
+            lightUp(clickColor);
+            playSound(clickColor);
+          }
+
+          if(userArr.length === simonArr.length) {
+            checkPattern();
+          }
+      });
+
+    }
 
     const displayCount = function displayCount () {
       count++;
@@ -113,7 +190,6 @@ const mainGame = function  mainGame () {
       }
       playSound(patternColor);
       lightUp(patternColor);
-      userArr = [];
       return displayCount();
     };
 
@@ -122,80 +198,11 @@ const mainGame = function  mainGame () {
     } else {
       replayPattern();
     }
-
   }
 
-
-
-
-  const checkPattern = function checkPattern () {
-    //logic that checks if the simonArr and the userArr are the same
-    let arrIndex = simonArr.length - 1;
-    if (userArr[arrIndex] === simonArr[arrIndex]) {
-      console.log('they the same!');
-    } else {
-      console.log('they not the same!');
-      //errorSound.play();
-    }
-    if (strictMode) {
-      if (userArr[arrIndex] === simonArr[arrIndex]) {
-        console.log('they the same!');
-      } else {
-        console.log('they not the same!');
-        //errorSound.play();
-        //newGame();
-      }
-    }
-  };
-
-  const userFunctions = function userFunctions () {
-      $('.cell').css('pointer-events', 'auto');
-      $('.cell').css('cursor', 'pointer');
-
-        $('.cell').unbind().on('click', (ev) => {
-        let cellColor = ev.target.className.split(" ")[0];
-        let clickColor = "";
-        if (cellColor === 'greenCell') {
-          clickColor = "green";
-          userArr.push('green');
-          lightUp(clickColor);
-          playSound(clickColor);
-        } else if (cellColor === 'redCell') {
-          clickColor = "red";
-          userArr.push('red');
-          lightUp(clickColor);
-          playSound(clickColor);
-        } else if (cellColor === 'yellowCell') {
-          clickColor = "yellow";
-          userArr.push('yellow');
-          lightUp(clickColor);
-          playSound(clickColor);
-        } else if (cellColor === 'blueCell'){
-          clickColor = "blue";
-          userArr.push('blue');
-          lightUp(clickColor);
-          playSound(clickColor);
-        }
-
-        console.log(userArr);
-        console.log(simonArr);
-
-        if(userArr.length === simonArr.length) {
-          checkPattern();
-          setTimeout(() => { return simonFunctions(); }, 2000);
-        }
-    });
-
-    console.log(userArr);
-    console.log(simonArr);
-
-
-
-  }
-
-  simonFunctions();
+  gamePlayFunctions();
 
 }
 
 
-  $('.startButton').on('click', mainGame);
+$('.startButton').on('click', mainGame);
