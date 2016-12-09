@@ -9,20 +9,12 @@ const mainGame = function  mainGame () {
   let simonArr = [],
   count = 0,
   strictMode = false,
-  simonTurn = true,
   userArr = [];
 
   $('.strictButton').on('click', () => {
     strictMode = true;
     $('.strictButton').css('pointerEvents', 'none');
   })
-
-
-  const displayCount = function displayCount () {
-    simonTurn = false;
-    count++;
-    $('.countScreen').html(count);
-  }
 
   /*const newGame = function newGame () {
     let simonArr = [],
@@ -73,56 +65,68 @@ const mainGame = function  mainGame () {
     }
   }
 
+  const simonFunctions = function simonFunctions () {
 
+    $('.cell').css('pointer-events', 'none');
+    $('.cell').css('cursor', 'auto');
 
+    const displayCount = function displayCount () {
+      count++;
+      $('.countScreen').html(count);
+      return userFunctions();
+    }
 
+    const replayPattern = function replayPattern () {
+     let replayColor = "";
+     let i = 0;
+     let seconds = 1000 * count;
 
-
-  const replayPattern = function replayPattern () {
-    //replay the pattern corresponding with what is contained in the simon array
-   //arr.map simon arr, and run the lightUp() and playSound() functions accordingly
-   let replayColor = "";
-   let i = 0;
-   let seconds = 1000 * count;
-   simonTurn = true;
-
-   const replayer = function replayer () {
-     replayColor = simonArr[i++];
-     lightUp(replayColor);
-     playSound(replayColor);
-       if (i < simonArr.length) {
-         setTimeout( replayer, 1000 );
+     const replayer = function replayer () {
+       replayColor = simonArr[i++];
+       lightUp(replayColor);
+       playSound(replayColor);
+         if (i < simonArr.length) {
+           setTimeout( replayer, 1000 );
+         }
        }
-     }
-     replayer();
-     if (count < 20 && simonTurn) {
-      setTimeout(() => { addToPattern(); }, seconds);
-     }
+       replayer();
+       if (count < 20) {
+        setTimeout(() => { addToPattern(); }, seconds);
+       }
+    }
+
+    const addToPattern = function addToPattern () {
+      let randomNumber = Math.floor(Math.random() * 4) + 1;
+      let patternColor = "";
+      if (randomNumber === 1) {
+        patternColor = "green";
+        simonArr.push('green');
+      } else if (randomNumber === 2) {
+        patternColor = "red"
+        simonArr.push('red');
+      } else if (randomNumber === 3) {
+        patternColor = "yellow";
+        simonArr.push('yellow');
+      } else if (randomNumber === 4) {
+        patternColor = "blue";
+        simonArr.push('blue');
+      }
+      playSound(patternColor);
+      lightUp(patternColor);
+      userArr = [];
+      return displayCount();
+    };
+
+    if (count === 0) {
+      addToPattern();
+    } else {
+      replayPattern();
+    }
+
   }
 
-  const addToPattern = function addToPattern () {
-    let randomNumber = Math.floor(Math.random() * 4) + 1;
-    let patternColor = "";
-    if (randomNumber === 1) {
-      patternColor = "green";
-      simonArr.push('green');
-    } else if (randomNumber === 2) {
-      patternColor = "red"
-      simonArr.push('red');
-    } else if (randomNumber === 3) {
-      patternColor = "yellow";
-      simonArr.push('yellow');
-    } else if (randomNumber === 4) {
-      patternColor = "blue";
-      simonArr.push('blue');
-    }
-    playSound(patternColor);
-    lightUp(patternColor);
-    displayCount();
-    userArr = [];
-  };
 
-    addToPattern();
+
 
   const checkPattern = function checkPattern () {
     //logic that checks if the simonArr and the userArr are the same
@@ -132,7 +136,6 @@ const mainGame = function  mainGame () {
     } else {
       console.log('they not the same!');
       //errorSound.play();
-     //
     }
     if (strictMode) {
       if (userArr[arrIndex] === simonArr[arrIndex]) {
@@ -145,10 +148,11 @@ const mainGame = function  mainGame () {
     }
   };
 
-  const userClick = function userClick () {
-    //handle user click after the simon game pattern runs
-      if (!simonTurn) {
-        $('.cell').on('click', (ev) => {
+  const userFunctions = function userFunctions () {
+      $('.cell').css('pointer-events', 'auto');
+      $('.cell').css('cursor', 'pointer');
+
+        $('.cell').unbind().on('click', (ev) => {
         let cellColor = ev.target.className.split(" ")[0];
         let clickColor = "";
         if (cellColor === 'greenCell') {
@@ -173,19 +177,23 @@ const mainGame = function  mainGame () {
           playSound(clickColor);
         }
 
+        console.log(userArr);
+        console.log(simonArr);
+
         if(userArr.length === simonArr.length) {
-          //checkPattern();
-          simonTurn = true;
-          setTimeout(() => { replayPattern(); }, 2000);
+          checkPattern();
+          setTimeout(() => { return simonFunctions(); }, 2000);
         }
-    })};
+    });
 
-}
+    console.log(userArr);
+    console.log(simonArr);
 
-  if (!simonTurn) {
-    $('.cell').css('pointer-events', 'auto');
-    $('.cell').on('click', userClick());
+
+
   }
+
+  simonFunctions();
 
 }
 
