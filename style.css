@@ -1,0 +1,74 @@
+body {
+  background-color: #000; }
+
+.notOn {
+  pointer-events: none; }
+
+.mainGame {
+  margin-top: 2.5%;
+  height: 100vh; }
+
+.topGameCells {
+  text-align: center; }
+
+.cell {
+  pointer-events: none; }
+
+.greenCell {
+  display: inline-block;
+  border-radius: 16px;
+  margin-left: 50px;
+  margin-right: 50px;
+  height: 200px;
+  width: 200px;
+  background-color: green; }
+
+.redCell {
+  display: inline-block;
+  border-radius: 16px;
+  margin-left: 50px;
+  margin-right: 50px;
+  height: 200px;
+  width: 200px;
+  background-color: red; }
+
+.centerDiv {
+  height: 250px;
+  text-align: center;
+  width: 250px;
+  background-color: #fff;
+  margin: 0 auto; }
+  .centerDiv h1 {
+    margin: 0;
+    padding-top: 25px; }
+  .centerDiv .countScreen {
+    border: solid 1px #000; }
+  .centerDiv .startButton {
+    cursor: pointer; }
+  .centerDiv .strictButton {
+    cursor: pointer; }
+  .centerDiv .ioButton {
+    cursor: pointer; }
+
+.bottomGameCells {
+  text-align: center; }
+
+.yellowCell {
+  display: inline-block;
+  margin-left: 50px;
+  margin-right: 50px;
+  border-radius: 16px;
+  height: 200px;
+  width: 200px;
+  background-color: yellow; }
+
+.blueCell {
+  display: inline-block;
+  margin-left: 50px;
+  margin-right: 50px;
+  border-radius: 16px;
+  height: 200px;
+  width: 200px;
+  background-color: blue; }
+
+/*# sourceMappingURL=style.css.map */
