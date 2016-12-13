@@ -89,29 +89,37 @@ const mainGame = function  mainGame () {
 
     const checkPattern = function checkPattern () {
       //logic that checks if the simonArr and the userArr are the same
-      let arrIndex = simonArr.length - 1;
+      //checkPattern function needs some work
       let errorSound = new Audio('./sounds/errorSound.wav');
-      if (userArr[arrIndex] === simonArr[arrIndex]) {
-        console.log('they the same!');
-        setTimeout(() => { return gamePlayFunctions(); }, 2000);
+      let index = userArr.length - 1;
+
+       if (userArr[index] === simonArr[index] && userArr.length === simonArr.length) {
+        setTimeout(() => { gamePlayFunctions(); }, 1500)
+      } else if (userArr[index] === simonArr[index]) {
+        console.log('They the same');
+        userFunctions();
       } else {
-        console.log('they not the same!');
+        console.log('They not the same');
         errorSound.play();
-        setTimeout(() => { return replayOnError(); }, 1500 );
+        $('.cell').css('pointer-events', 'none');
+        userArr = [];
+        setTimeout (() => { replayOnError(); }, 1500);
       }
-      if (strictMode) {
-        if (userArr[arrIndex] === simonArr[arrIndex]) {
-          console.log('they the same!');
-        } else {
-          console.log('they not the same!');
-          errorSound.play();
-          //newGame();
-        }
-      }
-    };
+
+        /*if (strictMode) {
+          if (userArr[arrIndex] === simonArr[arrIndex]) {
+            console.log('they the same!');
+          } else {
+            console.log('they not the same!');
+            errorSound.play();
+            //newGame();
+          }
+        }*/
+  }
+
+
 
     const userFunctions = function userFunctions () {
-        userArr = [];
         $('.cell').css('pointer-events', 'auto');
         $('.cell').css('cursor', 'pointer');
 
@@ -139,10 +147,9 @@ const mainGame = function  mainGame () {
             lightUp(clickColor);
             playSound(clickColor);
           }
-
-          if(userArr.length === simonArr.length) {
-            checkPattern();
-          }
+          checkPattern();
+          console.log(userArr);
+          console.log(simonArr);
       });
 
     }
@@ -150,6 +157,7 @@ const mainGame = function  mainGame () {
     const displayCount = function displayCount () {
       count++;
       $('.countScreen').html(count);
+      userArr = [];
       return userFunctions();
     }
 
