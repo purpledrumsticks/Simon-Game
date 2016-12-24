@@ -1,29 +1,42 @@
+let on = false,
+strictMode = false;
+
 $('.ioButton').on('click', () => {
-  let onSound = new Audio('./sounds/onSound.wav');
-  onSound.play();
-  $('.notOn').css('pointer-events', 'auto');
+  if (!on) {
+    let onSound = new Audio('./sounds/onSound.wav');
+    onSound.play();
+    $('.ioButton').css('color', '#fff');
+    $('.ioButton').css('background-color', '#000');
+    $('.notOn').css('pointer-events', 'auto');
+    on = true;
+  } else {
+    $('.ioButton').css('color', '#000');
+    $('.ioButton').css('background-color', '#fff');
+    $('.strictButton').css('color', '#000');
+    $('.strictButton').css('background-color', '#fff');
+    $('.notOn').css('pointer-events', 'none');
+    $('.countScreen').html('--');
+    on = false;
+    strictMode = false;
+  }
 });
+
+$('.strictButton').on('click', () => {
+  strictMode = true;
+  console.log(strictMode);
+  $('.strictButton').css('color', '#fff');
+  $('.strictButton').css('background-color', '#000');
+  $('.strictButton').css('pointerEvents', 'none');
+})
 
 const mainGame = function  mainGame () {
 
   let simonArr = [],
   count = 0,
-  strictMode = false,
   userArr = [];
 
-  $('.strictButton').on('click', () => {
-    strictMode = true;
-    $('.strictButton').css('pointerEvents', 'none');
-  })
-
-  /*const newGame = function newGame () {
-    let simonArr = [],
-    simonTurn = true,
-    count = 0,
-    userArr = [];
-
-    setTimeout( mainGame, 1000 );
-  }*/
+  $('.startButton').css('pointerEvents', 'none');
+  $('.strictButton').css('pointerEvents', 'none');
 
   const playSound = function playSound (color) {
     //play sound that corresponds with color
@@ -70,6 +83,27 @@ const mainGame = function  mainGame () {
     $('.cell').css('pointer-events', 'none');
     $('.cell').css('cursor', 'auto');
 
+    const newGame = function newGame () {
+      let simonArr = [],
+      count = 0,
+      userArr = [],
+      strictMode = false;
+      $('.countScreen').html('--');
+
+      setTimeout(() => { mainGame(); },  1500);
+    }
+
+
+    const newStrictGame = function newStrictGame () {
+      let simonArr = [],
+      count = 0,
+      userArr = [],
+      strictMode = true;
+      $('.countScreen').html('--');
+
+      setTimeout(() => { mainGame(); },  1500);
+    }
+
     const replayOnError = function replayOnError () {
       let replayColor = "";
       let i = 0;
@@ -96,25 +130,23 @@ const mainGame = function  mainGame () {
        if (userArr[index] === simonArr[index] && userArr.length === simonArr.length) {
         setTimeout(() => { gamePlayFunctions(); }, 1500)
       } else if (userArr[index] === simonArr[index]) {
-        console.log('They the same');
         userFunctions();
-      } else {
-        console.log('They not the same');
+      } else if (userArr[index] !== simonArr[index] && !strictMode){
         errorSound.play();
         $('.cell').css('pointer-events', 'none');
         userArr = [];
         setTimeout (() => { replayOnError(); }, 1500);
       }
 
-        /*if (strictMode) {
-          if (userArr[arrIndex] === simonArr[arrIndex]) {
-            console.log('they the same!');
-          } else {
-            console.log('they not the same!');
-            errorSound.play();
-            //newGame();
-          }
-        }*/
+      if (strictMode) {
+        if (userArr[index] !== simonArr[index]) {
+          errorSound.play();
+          newStrictGame();
+        }
+      }
+      if (count === 20 && userArr[index] === simonArr[index] && userArr.length === simonArr.length) {
+        newGame();
+      }
   }
 
 
@@ -148,8 +180,6 @@ const mainGame = function  mainGame () {
             playSound(clickColor);
           }
           checkPattern();
-          console.log(userArr);
-          console.log(simonArr);
       });
 
     }
@@ -177,7 +207,7 @@ const mainGame = function  mainGame () {
        replayer();
        if (count < 20) {
         setTimeout(() => { addToPattern(); }, seconds);
-       }
+      }
     }
 
     const addToPattern = function addToPattern () {
@@ -203,7 +233,7 @@ const mainGame = function  mainGame () {
 
     if (count === 0) {
       addToPattern();
-    } else {
+    } else if (count > 0 && count < 20) {
       replayPattern();
     }
   }

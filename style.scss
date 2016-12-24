@@ -23,8 +23,8 @@ body {
 .greenCell {
   display: inline-block;
   border-radius: 16px;
-  margin-left: 50px;
-  margin-right: 50px;
+  margin-left: 115px;
+  margin-right: 115px;
   height: 200px;
   width: 200px;
   background-color: green;
@@ -33,25 +33,29 @@ body {
 .redCell {
   display: inline-block;
   border-radius: 16px;
-  margin-left: 50px;
-  margin-right: 50px;
+  margin-left: 115px;
+  margin-right: 115px;
   height: 200px;
   width: 200px;
   background-color: red;
 }
 
 .centerDiv {
+  font-family: 'Fredoka One', cursive;
   height: 250px;
   text-align: center;
   width: 250px;
   background-color: #fff;
   margin: 0 auto;
+  border-radius: 16px;
     h1 {
       margin: 0;
       padding-top: 25px;
     }
       .countScreen {
         border: solid 1px #000;
+        border-right: none;
+        border-left: none;
       }
         .startButton {
           cursor: pointer;
@@ -70,8 +74,8 @@ body {
 
 .yellowCell {
   display: inline-block;
-  margin-left: 50px;
-  margin-right: 50px;
+  margin-left: 115px;
+  margin-right: 115px;
   border-radius: 16px;
   height: 200px;
   width: 200px;
@@ -80,8 +84,8 @@ body {
 
 .blueCell {
   display: inline-block;
-  margin-left: 50px;
-  margin-right: 50px;
+  margin-left: 115px;
+  margin-right: 115px;
   border-radius: 16px;
   height: 200px;
   width: 200px;
